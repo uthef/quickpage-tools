@@ -1,0 +1,53 @@
+{
+  "name": "quickpage-tools",
+  "displayName": "quickpage-tools",
+  "description": "Primitive template builder",
+  "publisher": "uthef",
+  "version": "0.0.1",
+  "repository": "https://github.com/uthef",
+  "engines": {
+    "vscode": "^1.82.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "quickpage-tools.build",
+        "title": "QuickPage: Build pages"
+      },
+      {
+        "command": "quickpage-tools.clear",
+        "title": "QuickPage: Clear directory"
+      },
+      {
+        "command": "quickpage-tools.select",
+        "title": "QuickPage: Select current workspace"
+      }
+    ]
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "node ./test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.2",
+    "@types/node": "18.x",
+    "@types/vscode": "^1.82.0",
+    "@types/prettier": "^2.7.3",
+    "@vscode/test-electron": "^2.3.4",
+    "esbuild": "^0.19.4",
+    "eslint": "^8.50.0",
+    "glob": "^10.3.3",
+    "mocha": "^10.2.0",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "jsdom": "^22.1.0",
+    "prettier": "^2.8.8"
+  }
+}

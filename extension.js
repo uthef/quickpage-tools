@@ -62,8 +62,8 @@ async function build() {
 async function clear() {
 	let isSelected = await makeSureFolderIsSelected();
 	if (!isSelected) return;
-	
-	let fileManager = new fm.FileManager(folder.uri.path, '');
+
+	let fileManager = new fm.FileManager(folder.uri._fsPath, '');
 	let dirs = [WF].concat(fileManager.listDirs(null));
 	let pickedValue = await vscode.window.showQuickPick(dirs);
 
@@ -73,7 +73,7 @@ async function clear() {
 		pickedValue = "";
 	}
 
-	fileManager.clearDirectory(path.join(folder.uri.path, pickedValue));
+	fileManager.clearDirectory(path.join(folder.uri._fsPath, pickedValue));
 }
 
 async function select() {
@@ -85,10 +85,11 @@ async function select() {
 }
 
 function readOrCreateConfig(filePath) {
-	let folderPath = folder.uri.path;
+	let folderPath = folder.uri._fsPath;
 	let fullPath = path.join(folderPath, filePath);
 
 	let defaultConfig = {
+		"$schema": 'schema.json',
 		relWorkDir: "src",
 		relOutputDir: "quickpage-output",
 		formatterOptions: tb.defaultPrettierOptions
@@ -114,6 +115,9 @@ function readOrCreateConfig(filePath) {
 	let dir = path.dirname(fullPath);
 	if (!fs.existsSync(dir)) fs.mkdirSync(dir);
 
+	let schema = require('./schema.js');
+
+	fs.writeFileSync(path.join(dir, 'schema.json'), JSON.stringify(schema.data, null, 3));
 	fs.writeFileSync(fullPath, JSON.stringify(defaultConfig, null, 3));
 
 	return {

@@ -273,7 +273,7 @@ class TemplateBuilder {
                     resOptions.parser = "html";
                     let res = prettier.format(dom.serialize(), resOptions);
                     fileManager.writeFile(entry, res.replace(regexp, ""));
-
+                    
                     filesWritten++;
                     continue;
                 }

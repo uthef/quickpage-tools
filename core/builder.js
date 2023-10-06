@@ -269,7 +269,9 @@ class TemplateBuilder {
                 let dom = this.processDocument(fileManager, path.dirname(entry), null, fileManager.readFile(entry), {});
 
                 if (dom) {
-                    let res = prettier.format(dom.serialize(), options ?? defaultPrettierOptions);
+                    let resOptions = options ?? defaultPrettierOptions;
+                    resOptions.parser = "html";
+                    let res = prettier.format(dom.serialize(), resOptions);
                     fileManager.writeFile(entry, res.replace(regexp, ""));
 
                     filesWritten++;

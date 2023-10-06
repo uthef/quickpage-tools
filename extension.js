@@ -3,6 +3,8 @@ const fm = require('./core/filemanager.js');
 const tb = require('./core/builder.js');
 const fs = require('fs');
 const path = require('path');
+const formatter = require('./formatter.js');
+
 const WF = '/$WORKSPACE_FOLDER';
 
 let folder = null;
@@ -31,8 +33,30 @@ async function build() {
 
 	let files = result.fileManager.lookForHtmlFiles('');
 	let builder = new tb.TemplateBuilder();
-	builder.processAndWriteDocuments(result.fileManager, 
-		files, result.config.formatterOptions);
+
+	vscode.window.withProgress({
+		location: vscode.ProgressLocation.Window,
+		cancellable: false,
+		title: 'QuickPage is in processing state...'
+	}, async () => {
+		let startTime = Date.now();
+
+		try {
+			let processedFileCount = builder.processAndWriteDocuments(result.fileManager, 
+				files, result.config.formatterOptions);
+
+			let millis = Date.now() - startTime;
+
+			vscode.window.showInformationMessage(
+				`Time spent: ${formatter.formatMillis(millis)}s; ` +
+				`Total amount of files: ${files.length}; ` +
+				`Output files: ${processedFileCount}; ` +
+				`Skipped files: ${files.length - processedFileCount}`
+			);
+		} catch (error) {
+			vscode.window.showErrorMessage(error.toString());
+		}
+	});
 }
 
 async function clear() {

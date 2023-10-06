@@ -1,5 +1,5 @@
 # QuickPage
-A simple offline template renderer written.
+A simple client-side template preprocessor.
 
 ## 1. Include a page
 ```html
@@ -46,6 +46,23 @@ Note: don't place require tags in the head section. Use **headdata** tag instead
 
 ## 5. Headdata tag
 **```<hd>``` is placed inside HTML body. Its content is always moved to the head section of the document.**
+
+## 6. JavaScript code execution
+Raw file:
+```html
+<p>
+    2 + 2 =
+    <script exec>
+        let attributes = this.attrs; // access attributes
+        this.sum = 2 + 2;
+        // write "null;" at the end of the script if you do not want to display returned value
+    </script>
+</p>
+```
+Processed file:
+```html
+<p>2 + 2 = 4</p>
+```
 
 <!-- ## Parameters
 

@@ -42,6 +42,7 @@ class TemplateBuilder {
         if (!attributes) attributes = {};
 
         this.applyRequirements(document, attributes);
+        this.executeScripts(document, attributes);
         this.replaceAttributes(document, attributes);
         this.replaceInclusions(fileManager, relativePath, attributes, document);
         let parentDom = this.applyParenting(fileManager, relativePath, attributes, document);
@@ -238,6 +239,22 @@ class TemplateBuilder {
     }
 
     /**
+     * 
+     * @param {Document} document 
+     * @param {object} attributes
+     */
+    executeScripts(document, attributes) {
+        let scripts = document.querySelectorAll('script[exec]');
+        let context = {attrs: attributes};
+
+        for (let script of scripts) {
+            let returnValue = this.evalInContext.call(context, script.textContent);
+            // let returnValue = eval(script.textContent);
+            script.replaceWith(document.createTextNode(returnValue ?? ""));
+        }
+    }
+
+    /**
      * @param {fm.FileManager} fileManager 
      * @param {Array<string>} paths
      * @param {prettier.Options} options
@@ -248,14 +265,18 @@ class TemplateBuilder {
         let filesWritten = 0;
 
         for (let entry of paths) {
-            let dom = this.processDocument(fileManager, path.dirname(entry), null, fileManager.readFile(entry), {});
+            try {
+                let dom = this.processDocument(fileManager, path.dirname(entry), null, fileManager.readFile(entry), {});
 
-            if (dom) {
-                let res = prettier.format(dom.serialize(), defaultPrettierOptions);
-                fileManager.writeFile(entry, res.replace(regexp, ""));
+                if (dom) {
+                    let res = prettier.format(dom.serialize(), options ?? defaultPrettierOptions);
+                    fileManager.writeFile(entry, res.replace(regexp, ""));
 
-                filesWritten++;
-                continue;
+                    filesWritten++;
+                    continue;
+                }
+            } catch (error) {
+                throw `An error ocurred while processing file "${entry}" - ${error}`;
             }
         }
 
@@ -275,6 +296,14 @@ class TemplateBuilder {
         }
 
         return obj;
+    }
+
+    /**
+     * @private
+     * @param {string} code
+    */
+    evalInContext(code) {
+        return eval(code);
     }
 }
 

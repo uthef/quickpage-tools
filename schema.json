@@ -1,0 +1,46 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "relWorkDir": {
+            "type": "string",
+            "description": "Relative working directory"
+        },
+        "relOutputDir": {
+            "type": "string",
+            "description": "Relative output directory"
+        },
+        "formatterOptions": {
+            "type": "object",
+            "properties": {
+                "parser": {
+                    "type": "string",
+                    "enum": ["html"]
+                },
+                "useTabs": {
+                    "type": "boolean"
+                },
+                "printWidth": {
+                    "type": "number"
+                },
+                "bracketSpacing": {
+                    "type": "boolean"
+                },
+                "bracketSameLine": {
+                    "type": "boolean"
+                },
+                "insertPragma": {
+                    "type": "boolean"
+                },
+                "trailingComma": {
+                    "type": "string",
+                    "enum": ["none", "es5", "all"]
+                },
+                "embeddedLanguageFormatting": {
+                    "type": "string",
+                    "enum": ["auto", "off"]
+                }
+            }
+        }
+    }
+}

@@ -27,9 +27,9 @@ async function build() {
 
 	if (!isSelected) return;
 
-	let result = readOrCreateConfig("_quickpage/config.json");
+	let result = await readOrCreateConfig("_quickpage/config.json");
 
-	if (result == null) return;
+	if (result == null || result.skipBuilding) return;
 
 	let files = result.fileManager.lookForHtmlFiles('');
 	let builder = new tb.TemplateBuilder();
@@ -84,7 +84,7 @@ async function select() {
 	}
 }
 
-function readOrCreateConfig(filePath) {
+async function readOrCreateConfig(filePath) {
 	let folderPath = folder.uri._fsPath;
 	let fullPath = path.join(folderPath, filePath);
 
@@ -111,21 +111,28 @@ function readOrCreateConfig(filePath) {
 			}
 		};
 	}
-	
-	let dir = path.dirname(fullPath);
-	if (!fs.existsSync(dir)) fs.mkdirSync(dir);
 
-	let schema = require('./schema.js');
+	let selection = await vscode.window.showWarningMessage('QuickPage could not find a configuration file. Would you like to create one?', 'Create');
 
-	fs.writeFileSync(path.join(dir, 'schema.json'), JSON.stringify(schema.data, null, 3));
-	fs.writeFileSync(fullPath, JSON.stringify(defaultConfig, null, 3));
+	if (selection == 'Create') {	
+		let dir = path.dirname(fullPath);
+		if (!fs.existsSync(dir)) fs.mkdirSync(dir);
 
-	return {
-		fileManager: new fm.FileManager(
-			path.join(folderPath, defaultConfig.relWorkDir),
-			path.join(folderPath, defaultConfig.relOutputDir)),
-		config: defaultConfig
-	};
+		let schema = require('./schema.js');
+
+		fs.writeFileSync(path.join(dir, 'schema.json'), JSON.stringify(schema.data, null, 3));
+		fs.writeFileSync(fullPath, JSON.stringify(defaultConfig, null, 3));
+
+		return {
+			fileManager: new fm.FileManager(
+				path.join(folderPath, defaultConfig.relWorkDir),
+				path.join(folderPath, defaultConfig.relOutputDir)),
+			config: defaultConfig,
+			skipBuilding: true
+		};
+	}
+
+	return null;
 }
 
 async function makeSureFolderIsSelected() {

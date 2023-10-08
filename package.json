@@ -3,7 +3,7 @@
   "displayName": "quickpage-tools",
   "description": "A simple client-side template preprocessor",
   "publisher": "uthef",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "repository": "https://github.com/uthef",
   "engines": {
     "vscode": "^1.82.0"

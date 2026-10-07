@@ -245,7 +245,7 @@ class TemplateBuilder {
      */
     executeScripts(document, attributes) {
         let scripts = document.querySelectorAll('script[exec]');
-        let context = {attrs: attributes};
+        let context = {attrs: attributes, document: document};
 
         for (let script of scripts) {
             let returnValue = this.evalInContext.call(context, script.textContent);

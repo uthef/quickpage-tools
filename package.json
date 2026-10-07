@@ -1,9 +1,9 @@
 {
   "name": "quickpage-tools",
   "displayName": "quickpage-tools",
-  "description": "A simple client-side template preprocessor",
+  "description": "A simple client-side template preprocessor (static site generator)",
   "publisher": "uthef",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "repository": "https://github.com/uthef",
   "engines": {
     "vscode": "^1.82.0"

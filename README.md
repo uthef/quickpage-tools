@@ -1,11 +1,12 @@
 # QuickPage
-A simple client-side template preprocessor.
+A simple client-side HTML template preprocessor (static site generator).
 
-## 1. Include a page
+## Usage
+### 1. Include a page
 ```html
 <include>path_to_file.html</include> <!-- attributes are optional and passed to the included file -->
 ```
-## 2. Use another page as a parent
+### 2. Use another page as a parent
 child.html:
 ```html
 <parent>parent.html</parent> <!-- attributes are optional and passed to the parent file -->
@@ -14,7 +15,9 @@ parent.html:
 ```html
 <content><!-- here will be the child page's content --></content>
 ```
-## 3. Pass attributes
+> [!Note]
+> Add an underscore to the beginning of a file name to not include it in the output directory, e.g. _file.html.
+### 3. Pass attributes
 child.html:
 ```html
 <parent var="12" var2="20">parent.html</parent>
@@ -31,7 +34,7 @@ parent.html:
 <span attr>@@var2</span>
 ```
 
-## 4. Require tag
+### 4. Require tag
 ```html
 <!-- The following tag and its content will be removed if no "var" attribute is passed -->
 <require name="var">
@@ -44,10 +47,10 @@ parent.html:
 ```
 Note: don't place require tags in the head section. Use **headdata** tag instead.
 
-## 5. Headdata tag
+### 5. Headdata tag
 **```<hd>``` is placed inside HTML body. Its content is always moved to the head section of the document.**
 
-## 6. JavaScript code execution
+### 6. JavaScript code execution
 Raw file:
 ```html
 <p>

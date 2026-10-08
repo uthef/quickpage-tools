@@ -32,6 +32,7 @@ parent.html:
 ```html
 <span attr>@@var</span>
 <span attr>@@var2</span>
+<input attr type="text" value="@@var3"> 
 ```
 
 ### 4. Require tag

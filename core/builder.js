@@ -72,6 +72,18 @@ class TemplateBuilder {
             relativePath = path.join(relativePath, path.dirname(inclPath));
             let buffer = fileManager.readFile(path.join(relativePath, path.basename(inclPath)));
 
+            if (inclPath.endsWith(".css")) {
+                let styleBlock = document.createElement('style');
+                styleBlock.textContent = buffer.toString('utf8');
+                inclusion.replaceWith(styleBlock);
+                continue;
+            } else if (inclPath.endsWith(".js")) {
+                let scriptBlock = document.createElement('script');
+                scriptBlock.textContent = buffer.toString('utf8');
+                inclusion.replaceWith(scriptBlock);
+                continue;
+            }
+
             attributes = Object.assign(attributes, this.convertAttributeMapToObject(inclusion.attributes));
 
             let inclDom = this.processDocument(fileManager, relativePath, attributes, buffer, { innerCall: true });

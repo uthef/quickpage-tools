@@ -46,7 +46,8 @@ parent.html:
     <p attr>var equals @@var</p>
 </require>
 ```
-Note: don't place require tags in the head section. Use **headdata** tag instead.
+>[!NOTE]
+> Do not place require tags in the head section. Use **headdata** tag instead.
 
 ### 5. Headdata tag
 **```<hd>``` is placed inside HTML body. Its content is always moved to the head section of the document.**

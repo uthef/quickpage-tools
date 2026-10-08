@@ -1,5 +1,5 @@
 # QuickPage
-A simple client-side HTML template preprocessor (static site generator).
+A simple client-side HTML template preprocessor (static site generator) for VS code.
 
 ## Usage
 ### 1. Include a page

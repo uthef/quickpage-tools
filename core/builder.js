@@ -184,6 +184,21 @@ class TemplateBuilder {
             let text = inlineAttr.textContent;
             let matches = text.matchAll(regexp);
 
+            for (let attribute of inlineAttr.attributes) {
+                let attrValue = inlineAttr.getAttribute(attribute.name);
+
+                if (!attrValue)
+                    continue;
+                
+                for (let attrMatch of attrValue.matchAll(regexp)) {
+                    let varName = attrMatch[0].replace('@@', '');
+                    inlineAttr.setAttribute(
+                        attribute.name, 
+                        attrValue.replace(attrMatch[0], varName in attributes ? attributes[varName] : 'NULL')
+                    );
+                }
+            }
+
             for (let match of matches) {
                 let varName = match[0].replace('@@', '');
                 text = text.replace(match[0], varName in attributes ? attributes[varName] : 'NULL');

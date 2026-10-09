@@ -42,7 +42,7 @@ class TemplateBuilder {
         if (!attributes) attributes = {};
 
         this.applyRequirements(document, attributes);
-        this.executeScripts(document, attributes);
+        this.executeScripts(fileManager, relativePath, document, attributes);
         this.replaceAttributes(document, attributes);
         this.replaceInclusions(fileManager, relativePath, attributes, document);
         let parentDom = this.applyParenting(fileManager, relativePath, attributes, document);
@@ -266,15 +266,26 @@ class TemplateBuilder {
     }
 
     /**
-     * 
+     * @param {fm.FileManager} fileManager
+     * @param {string} relativePath
      * @param {Document} document 
      * @param {object} attributes
      */
-    executeScripts(document, attributes) {
+    executeScripts(fileManager, relativePath, document, attributes) {
         let scripts = document.querySelectorAll('script[exec]');
         let context = {attrs: attributes, document: document};
 
         for (let script of scripts) {
+            if (script.hasAttribute("dependency")) {
+                let dependencyPath = script.getAttribute("dependency");
+
+                if (!dependencyPath)
+                    continue;
+
+                let dependencyScript = fileManager.readFile(path.join(relativePath, path.basename(dependencyPath))).toString();
+                this.evalInContext.call(context, dependencyScript);
+            }
+
             let returnValue = this.evalInContext.call(context, script.textContent);
             // let returnValue = eval(script.textContent);
             script.replaceWith(document.createTextNode(returnValue ?? ""));

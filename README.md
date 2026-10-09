@@ -106,6 +106,15 @@ Processed file:
 <p>2 + 2 = 4</p>
 ```
 
+Execute an external file at compile time:
+```html
+<p>
+    <script dependency="script.js" exec>
+        "executed 'script.js'!";
+    </script>
+</p>
+```
+
 <!-- ## Parameters
 
 | Name  | Description |

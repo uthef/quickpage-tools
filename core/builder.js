@@ -225,7 +225,7 @@ class TemplateBuilder {
 
             let varName = tag.getAttribute('name');
 
-            if (!(varName in attributes) || attributes[varName].toLowerCase() == '@discard') {
+            if (!(varName in attributes) || (typeof attributes[varName] === "string" && attributes[varName].toLowerCase() == '@discard')) {
                 tag.remove();
                 continue;
             }  

@@ -1,10 +1,48 @@
 # QuickPage
 A simple client-side HTML template preprocessor (static site generator) for VS code.
 
+## Project structure example
+- 📁 _quickpage
+    - 📄 config.json
+- 📁 quickpage-output
+    - 📁 css
+        - 📄 main.css
+    - 📁 images
+        - 📄 test.png
+    - 📄 *index.html* **(auto-generated)**
+- 📁 src
+    - 📁 layouts
+        - 📄 _main_layout.html
+    - 📄 index.html
+> [!NOTE]
+> Add an underscore to the beginning of a file name to not include it in the output directory, e.g. *_file.html*.
+
+> [!NOTE]
+> You can store static content directly in the output folder.
+
+## Default configuration file
+_quickapge/config.json
+```json
+{
+   "$schema": "schema.json",
+   "relWorkDir": "src",
+   "relOutputDir": "quickpage-output",
+   "formatterOptions": {
+      "parser": "html",
+      "bracketSameLine": true,
+      "bracketSpacing": false,
+      "printWidth": 700,
+      "useTabs": true
+   }
+}
+```
+
 ## Usage
-### 1. Include a page
+### 1. Include HTML, CSS and JavaScript 
 ```html
-<include>path_to_file.html</include> <!-- attributes are optional and passed to the included file -->
+<include myattr="1">path_to_file.html</include> <!-- attributes are optional and passed to the included file -->
+<include>style.css</include> <!-- will be included as <style> ... </style> -->
+<include>script.js</include> <!-- will be included as <script> ... </script> -->
 ```
 ### 2. Use another page as a parent
 child.html:
@@ -15,8 +53,6 @@ parent.html:
 ```html
 <content><!-- here will be the child page's content --></content>
 ```
-> [!Note]
-> Add an underscore to the beginning of a file name to not include it in the output directory, e.g. _file.html.
 ### 3. Pass attributes
 child.html:
 ```html
@@ -46,8 +82,8 @@ parent.html:
     <p attr>var equals @@var</p>
 </require>
 ```
->[!NOTE]
-> Do not place require tags in the head section. Use **headdata** tag instead.
+>[!WARNING]
+> Do not place require tags in the head section. Use the **headdata** tag instead.
 
 ### 5. Headdata tag
 **```<hd>``` is placed inside HTML body. Its content is always moved to the head section of the document.**

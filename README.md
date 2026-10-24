@@ -97,7 +97,7 @@ Raw file:
         let attributes = this.attrs; // access attributes
         let document = this.document; // access DOM
         this.sum = 2 + 2;
-        // write "null;" at the end of the script if you do not want to display returned value
+        // write "null;" at the end of the script if you do not want to display the result of the last expression.
     </script>
 </p>
 ```
